@@ -1,6 +1,7 @@
 const Matrix = function (n,m) {
-
-    const values = new Float64Array(n*m)
+    const buffer = new ArrayBuffer(n*m*Float64Array.BYTES_PER_ELEMENT);
+    const values = new Float64Array(buffer);
+    console.log(values.length)
     
     const matrixFunc = function() {
         if (arguments.length == 2 && typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
@@ -49,9 +50,22 @@ const Matrix = function (n,m) {
                 return C
             }
         },
+        getArray: {
+            enumerable: false,
+            configurable: false,
+            writable: false,
+            value: function () {
+                const a = [];
+                const size = 1//Float64Array.BYTES_PER_ELEMENT;
+                for (let i = 0; i < matrixFunc.rows; i++) {
+                    a.push(new Float64Array(buffer,i*matrixFunc.cols*size, matrixFunc.cols*size))
+                }
+                return a;
+            }
+        },
     });
 
-    return matrix;
+    return matrixFunc;
 
 };
 
@@ -74,7 +88,7 @@ window.addEventListener('load', event => {
     const A = new Matrix(2,2);
     const B = new Matrix(2,2);
     const C = A.multiply(B);
-    console.log(A,B,C)
+    console.log(A.getArray(),B.getArray(),C.getArray())
 
 
 })
