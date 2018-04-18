@@ -1,7 +1,8 @@
 const Matrix = function (n,m) {
     const buffer = new ArrayBuffer(n*m*Float64Array.BYTES_PER_ELEMENT);
     const values = new Float64Array(buffer);
-    console.log(values.length)
+    values.forEach((x,i,a) => a[i] = i);
+    console.log(values);
     
     const matrixFunc = function() {
         if (arguments.length == 2 && typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
@@ -56,11 +57,32 @@ const Matrix = function (n,m) {
             writable: false,
             value: function () {
                 const a = [];
-                const size = 1//Float64Array.BYTES_PER_ELEMENT;
                 for (let i = 0; i < matrixFunc.rows; i++) {
-                    a.push(new Float64Array(buffer,i*matrixFunc.cols*size, matrixFunc.cols*size))
+                    console.log(i,i*matrixFunc.cols, matrixFunc.cols + i*matrixFunc.cols)
+                console.log(new Float64Array(buffer,i*matrixFunc.cols,matrixFunc.cols))
+                    a.push(new Float64Array(buffer,i*matrixFunc.cols,1))
                 }
                 return a;
+            }
+        },
+        toLatex: {
+            enumerable: false,
+            configurable: false,
+            writable: true,
+            value: function () {
+                let texCode = ''
+                texCode += '\\left(\n\t\\begin{array}{'+'c'.repeat(matrixFunc.cols)+'}\n'
+                
+                for (let i = 0; i < matrixFunc.rows; i++) {
+                    texCode += '\t\t'
+                    for (let j = 0; j < matrixFunc.cols; j++) {
+                        texCode += '' + matrixFunc(i,j) + ((j < matrixFunc.cols -1) ? ' & ' : '\\\\')
+                    }
+                    texCode += '\n'
+                }
+
+                texCode += '\t\\end{array}\n\\right)'
+                return texCode
             }
         },
     });
@@ -88,7 +110,7 @@ window.addEventListener('load', event => {
     const A = new Matrix(2,2);
     const B = new Matrix(2,2);
     const C = A.multiply(B);
-    console.log(A.getArray(),B.getArray(),C.getArray())
 
+    document.querySelector('.jumbotron p').innerHTML = '$$' + A.toLatex() + ' \\cdot ' + B.toLatex() + ' = ' + C.toLatex() + '$$';
 
 })
