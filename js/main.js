@@ -1,12 +1,14 @@
 const Matrix = function (n,m) {
     const buffer = new ArrayBuffer(n*m*Float64Array.BYTES_PER_ELEMENT);
     const values = new Float64Array(buffer);
-    values.forEach((x,i,a) => a[i] = i);
-    console.log(values);
+    values.forEach((x,i,a) => a[i] = Math.floor(2*20*(Math.random()-0.5)))
     
     const matrixFunc = function() {
         if (arguments.length == 2 && typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
             return values[arguments[0]*m + arguments[1]]
+        } else if (arguments.length == 3 && typeof arguments[0] === 'number' && typeof arguments[1] === 'number' && typeof arguments[2] === 'number') {
+            values[arguments[0]*m + arguments[1]] = arguments[2]
+            return matrixFunc
         } else if (arguments.length == 1 && arguments[0].__isMatrix) {
             return matrixFunc.multiply(arguments[0])
         }
@@ -40,13 +42,14 @@ const Matrix = function (n,m) {
     
                 for (let i = 0; i < A.rows; i++) {
                     for (let j = 0; j < B.cols; j++) {
-                        const index = i*A.cols+j;
-                        C[index] = 0;
+                        const index = i*C.cols+j;
+                        C(i,j,0)
                         for (let k = 0; k < K; k++) {
-                            C[index] += A(i,k) * B(k,j)
+                            C(i,j,C(i,j) + A(i,k) * B(k,j))
                         }
                     }
                 }
+
     
                 return C
             }
