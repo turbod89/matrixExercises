@@ -1,0 +1,22 @@
+.inputCell {
+    width: 3em;
+    border: 1px grey solid;
+}
+.inputCell.correct {
+    width: 3em;
+    border: 1px green solid;
+    background-color: rgba(127, 255, 127, 0.329);
+}
+.inputCell.incorrect {
+    width: 3em;
+    border: 1px red solid;
+    background-color: rgba(255, 127, 127, 0.329);
+}
+
+
+table.matrix {
+    vertical-align: center;
+    border-left:2px black solid;
+    border-right:2px black solid;
+    padding-left: 2em;
+}

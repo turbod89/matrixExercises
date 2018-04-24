@@ -1,7 +1,12 @@
 const Matrix = function (n,m) {
     const buffer = new ArrayBuffer(n*m*Float64Array.BYTES_PER_ELEMENT);
     const values = new Float64Array(buffer);
-    values.forEach((x,i,a) => a[i] = Math.floor(2*20*(Math.random()-0.5)))
+    values.forEach((x,i,a) => a[i] = Math.floor(
+        20
+        *2*(Math.random()-0.5)
+        *2*(Math.random()-0.5)
+        * 2 * (Math.random() - 0.5)
+    ))
     
     const matrixFunc = function() {
         if (arguments.length == 2 && typeof arguments[0] === 'number' && typeof arguments[1] === 'number') {
@@ -108,12 +113,70 @@ Object.defineProperties(Matrix.prototype, {
     
 });
 
+const UnifInt = (a = 0, b = 1) => Math.floor((b-a+1)*Math.random()) + a
+
+
 window.addEventListener('load', event => {
 
-    const A = new Matrix(2,2);
-    const B = new Matrix(2,2);
-    const C = A.multiply(B);
+    const containerCols = document.querySelectorAll('.questions-container .question-container-rows')
+    const contianerAns = document.querySelector('.answer-container-rows')
 
-    document.querySelector('.jumbotron p').innerHTML = '$$' + A.toLatex() + ' \\cdot ' + B.toLatex() + ' = ' + C.toLatex() + '$$';
+    const exercises = [];
+    for (let i = 0 ; i < 10; i++) {
+        const dims = [0,0,0].map( i => UnifInt(2,5))
+        const A = new Matrix(dims[0], dims[1])
+        const B = new Matrix(dims[1], dims[2])
+        const C = A(B)
+        const exercice = exercises[1] = {
+            m: [A,B],
+            sol: C
+        }
+
+        const cc = containerCols[i%containerCols.length]
+
+        const wrapper = document.createElement('div')
+        const wrapper2 = document.createElement('div')
+        wrapper.classList.add('row')
+        wrapper2.classList.add('col-8')
+        wrapper.appendChild(wrapper2)
+        wrapper2.innerHTML = '$$' + A.toLatex() + ' \\cdot ' + B.toLatex() + ' = $$'
+        
+        const wrapper3 = document.createElement('div')
+        const wrapper4 = document.createElement('div')
+        wrapper3.classList.add('row')
+        wrapper4.classList.add('col-4')
+        wrapper.appendChild(wrapper4)
+        const table = document.createElement('table')
+        table.classList.add('matrix')
+        for (let ii = 0; ii < dims[0]; ii++) {
+            const row = document.createElement('tr')
+            for (let jj = 0; jj < dims[2]; jj++) {
+                const cell = document.createElement('td')
+                const input = document.createElement('input')
+                input.setAttribute('type','text')
+                input.classList.add('inputCell')
+                input.addEventListener('keyup', event => {
+                    if (input.value === '') {
+                        input.classList.remove('correct')
+                        input.classList.remove('incorrect')
+                    } else if (isNaN(input.value) || Number(input.value) != C(ii,jj)) {
+                        input.classList.add('incorrect')
+                        input.classList.remove('correct')
+                    } else {
+                        input.classList.add('correct')
+                        input.classList.remove('incorrect')
+                    }
+                })
+                
+                cell.appendChild(input)
+                row.appendChild(cell)
+            }
+            table.appendChild(row)
+        }
+        wrapper4.appendChild(table)
+        cc.appendChild(wrapper)
+        
+    }
+
 
 })
