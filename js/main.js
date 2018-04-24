@@ -114,6 +114,7 @@ Object.defineProperties(Matrix.prototype, {
 });
 
 const UnifInt = (a = 0, b = 1) => Math.floor((b-a+1)*Math.random()) + a
+const BottomSquaredInt = (a = 0, b = 1) => Math.floor((b - a + 1) * Math.random() * Math.random()) + a
 
 
 window.addEventListener('load', event => {
@@ -123,7 +124,7 @@ window.addEventListener('load', event => {
 
     const exercises = [];
     for (let i = 0 ; i < 10; i++) {
-        const dims = [0,0,0].map( i => UnifInt(2,5))
+        const dims = [0,0,0].map( i => BottomSquaredInt(2,5))
         const A = new Matrix(dims[0], dims[1])
         const B = new Matrix(dims[1], dims[2])
         const C = A(B)
