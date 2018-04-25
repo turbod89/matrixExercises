@@ -154,7 +154,7 @@ window.addEventListener('load', event => {
             for (let jj = 0; jj < dims[2]; jj++) {
                 const cell = document.createElement('td')
                 const input = document.createElement('input')
-                input.setAttribute('type','text')
+                input.setAttribute('type','number')
                 input.classList.add('inputCell')
                 input.addEventListener('keyup', event => {
                     if (input.value === '') {
