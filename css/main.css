@@ -14,9 +14,13 @@
 }
 
 
-table.matrix {
-    vertical-align: center;
+.matrix table{
+}
+.matrix {
+    display: inline-block;
     border-left:2px black solid;
     border-right:2px black solid;
-    padding-left: 2em;
+    border-radius: 1em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
 }

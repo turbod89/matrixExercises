@@ -144,11 +144,11 @@ window.addEventListener('load', event => {
         
         const wrapper3 = document.createElement('div')
         const wrapper4 = document.createElement('div')
-        wrapper3.classList.add('row')
-        wrapper4.classList.add('col-4')
-        wrapper.appendChild(wrapper4)
+        //wrapper4.classList.add('')
+        wrapper4.classList.add('matrix')
+        wrapper3.classList.add('col-4')
+        wrapper3.classList.add('align-middle')
         const table = document.createElement('table')
-        table.classList.add('matrix')
         for (let ii = 0; ii < dims[0]; ii++) {
             const row = document.createElement('tr')
             for (let jj = 0; jj < dims[2]; jj++) {
@@ -175,6 +175,8 @@ window.addEventListener('load', event => {
             table.appendChild(row)
         }
         wrapper4.appendChild(table)
+        wrapper3.appendChild(wrapper4)
+        wrapper.appendChild(wrapper3)
         cc.appendChild(wrapper)
         
     }
