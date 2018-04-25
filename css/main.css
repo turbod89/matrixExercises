@@ -23,4 +23,7 @@
     border-radius: 1em;
     padding-left: 0.75em;
     padding-right: 0.75em;
+    top: 50%;
+    position: absolute;
+    transform: translateY(-50%);
 }
