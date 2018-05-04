@@ -183,8 +183,14 @@ const Matrix = function (n,m) {
                     p.push(i)
                 }
                 
-                const L = Matrix(A.rows,A.rows)
+                const L = Matrix.zeros(A.rows,A.rows)
                 const U = A('t')('t')
+
+                const swap = (i,j) => {
+                    const a = p[i]
+                    p[i] = p[j]
+                    p[j] = a
+                }
 
                 return {'perm': p, 'L': L, 'U': U}
             }
@@ -373,14 +379,14 @@ window.addEventListener('load', event => {
         wrapper.classList.add('row')
         wrapper2.classList.add('col-8')
         wrapper.appendChild(wrapper2)
-        wrapper2.innerHTML = '$$' + A.toLatex() + '^{t} = $$'
+        wrapper2.innerHTML = '$$' + A.toLatex() + ' = $$'
         
         const wrapper3 = document.createElement('div')
         const wrapper4 = document.createElement('div')
         //wrapper4.classList.add('')
         wrapper3.classList.add('col-4')
         wrapper3.classList.add('align-middle')
-        wrapper4.innerHTML = wrapper2.innerHTML = '$$' + plu.L.toLatex() + ' \\cdot ' + plu.U.toLatex() + ' $$'
+        wrapper4.innerHTML = '$$' + plu.L.toLatex() + ' \\cdot ' + plu.U.toLatex() + ' $$'
         wrapper3.appendChild(wrapper4)
         wrapper.appendChild(wrapper3)
         cc.appendChild(wrapper)
